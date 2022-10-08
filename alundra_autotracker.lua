@@ -116,13 +116,18 @@ function get_item_quantity(item_id)
     return memory.read_u8(addr, "MainRAM")
 end
 
+function is_game_playing()
+    return memory.read_u16_le(0x1DD810, "MainRAM") == 0x1EE
+end
+
 function draw_inventory()
     forms.clear(canvas_handle, BACKGROUND_COLOR)
     for _, layout_slot in ipairs(LAYOUT) do
         -- Find the best owned item in slot
         best_owned_item_for_slot = ''
         for _, item_name in ipairs(layout_slot["items"]) do
-            if inventory[item_name] > 0 then
+            owned_quantity = inventory[item_name]
+            if owned_quantity ~= nil and owned_quantity > 0 then
                 best_owned_item_for_slot = item_name
             end
         end
@@ -147,23 +152,28 @@ form_handle = forms.newform(WINDOW_WIDTH, WINDOW_HEIGHT, "Alundra Randomizer Tra
 canvas_handle = forms.pictureBox(form_handle, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
 
 frame_count = 0
+updated = true
 while true do
-    frame_count = frame_count + 1
-    if frame_count % REFRESH_EVERY_N_FRAMES == 0 then
-        frame_count = 0
-        updated = false
-        for name, item_id in pairs(ITEMS) do
-            new_value = get_item_quantity(item_id)
-            if new_value ~= inventory[name] then
-                inventory[name] = new_value
-                updated = true
+    if is_game_playing() == true then
+        frame_count = frame_count + 1
+        if frame_count % REFRESH_EVERY_N_FRAMES == 0 then
+            frame_count = 0
+            for name, item_id in pairs(ITEMS) do
+                new_value = get_item_quantity(item_id)
+                old_value = inventory[name]
+                if old_value == nil or new_value > old_value then
+                    inventory[name] = new_value
+                    updated = true
+                end
             end
         end
-
-        if updated == true then
-            draw_inventory()
-        end
     end
+
+    if updated == true then
+        draw_inventory()
+        updated = false
+    end
+
 	emu.frameadvance()
 end
 
