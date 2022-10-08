@@ -120,6 +120,15 @@ function is_game_playing()
     return memory.read_u16_le(0x1DD810, "MainRAM") == 0x1EE
 end
 
+ancient_shrine_flag = false
+function update_ancient_shrine_flag()
+    flag_byte = memory.read_u8(0x1DD3F8, "MainRAM")
+    flag_bit = bit.band(flag_byte, 0x80)
+    old_value = ancient_shrine_flag
+    ancient_shrine_flag = flag_bit > 0
+    return ancient_shrine_flag ~= old_value
+end
+
 function draw_inventory()
     forms.clear(canvas_handle, BACKGROUND_COLOR)
     for _, layout_slot in ipairs(LAYOUT) do
@@ -143,6 +152,9 @@ function draw_inventory()
         forms.drawImage(canvas_handle, image_path, LEFT_MARGIN + layout_slot["x"], TOP_MARGIN + layout_slot["y"])
     end
 
+    if ancient_shrine_flag == true then
+        forms.drawText(canvas_handle, 80, 315, "Ancient Shrine Flag is set !", 0xFF000000)
+    end
     forms.refresh(canvas_handle)
 end
 
@@ -165,6 +177,10 @@ while true do
                     inventory[name] = new_value
                     updated = true
                 end
+            end
+            
+            if update_ancient_shrine_flag() == true then
+                updated = true
             end
         end
     end
