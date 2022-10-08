@@ -51,6 +51,7 @@ ITEMS = {
     tree_gem        = 0x4D,
     aqua_cape       = 0x28,
     broken_armor    = 0x21,
+    small_key       = 0x4B,
 
     crest_ruby      = 0x3E,
     crest_sapphire  = 0x3F,
@@ -91,12 +92,13 @@ LAYOUT = {
     { x = SIZE_UNIT,        y = SIZE_UNIT*3,    items = { 'spring_bean' } },
     { x = SIZE_UNIT*2,      y = SIZE_UNIT*3,    items = { 'power_glove' } },
     { x = SIZE_UNIT*3,      y = SIZE_UNIT*3,    items = { 'sand_cape' } },
+    { x = SIZE_UNIT*4,      y = SIZE_UNIT*3,    items = { 'aqua_cape' } },
     { x = SIZE_UNIT*5,      y = SIZE_UNIT*3,    items = { 'olgas_ring' } },
     
     { x = 0,                y = SIZE_UNIT*4,    items = { 'secret_pass' } },
     { x = SIZE_UNIT,        y = SIZE_UNIT*4,    items = { 'bouquet' } },
     { x = SIZE_UNIT*2,      y = SIZE_UNIT*4,    items = { 'tree_gem' } },
-    { x = SIZE_UNIT*3,      y = SIZE_UNIT*4,    items = { 'aqua_cape' } },
+    { x = SIZE_UNIT*3,      y = SIZE_UNIT*4,    items = { 'small_key' } },
     { x = SIZE_UNIT*4,      y = SIZE_UNIT*4,    items = { 'broken_armor' } },
     { x = SIZE_UNIT*5,      y = SIZE_UNIT*4,    items = { 'recovery_ring' } },
 
